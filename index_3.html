@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verdikompasset – Digital Lederguide for Frivillig Beredskap</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080c14;
+  --surface: #0d1520;
+  --surface2: #111c2d;
+  --border: rgba(255,255,255,0.07);
+  --accent: #e8a020;
+  --accent2: #e05030;
+  --accent3: #40b4e0;
+  --text: #d8e4f0;
+  --muted: #5a7090;
+  --white: #f0f6ff;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ─── SCANLINE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 80% at -10% 50%, rgba(232,160,32,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 100% at 110% 20%, rgba(64,180,224,0.05) 0%, transparent 50%),
+    linear-gradient(160deg, #080c14 0%, #0a1220 60%, #080c14 100%);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(232,160,32,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,160,32,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+}
+
+.hero-left {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 60px 80px 80px;
+}
+
+.hero-right {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 80px 80px 40px;
+}
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: blink 2.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,100% { opacity:1; } 50% { opacity:0.3; }
+}
+
+.status-text {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-label {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin-bottom: 12px;
+}
+
+.hero h1 span {
+  display: block;
+  -webkit-text-stroke: 1px rgba(232,160,32,0.6);
+  color: transparent;
+  font-size: clamp(4rem, 8vw, 7rem);
+}
+
+.hero-tagline {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  color: rgba(216,228,240,0.6);
+  margin-bottom: 40px;
+  max-width: 420px;
+  line-height: 1.5;
+  border-left: 2px solid var(--accent);
+  padding-left: 20px;
+}
+
+.hero-desc {
+  font-size: 0.92rem;
+  color: var(--muted);
+  max-width: 420px;
+  line-height: 1.8;
+  margin-bottom: 48px;
+}
+
+.btn-row { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.btn {
+  padding: 12px 28px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.25s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-gold {
+  background: var(--accent);
+  color: #000;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+.btn-gold:hover { background: #f0b030; transform: translateY(-2px); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Phone mockup */
+.phone-wrap {
+  position: relative;
+  width: 280px;
+}
+
+.phone-outer {
+  width: 280px;
+  height: 560px;
+  background: linear-gradient(145deg, #1a2535, #0d1520);
+  border-radius: 42px;
+  border: 2px solid rgba(255,255,255,0.12);
+  padding: 20px 16px;
+  position: relative;
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(255,255,255,0.04),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.phone-notch {
+  width: 80px; height: 22px;
+  background: #080c14;
+  border-radius: 0 0 16px 16px;
+  margin: 0 auto 12px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px;
+}
+
+.notch-dot { width: 6px; height: 6px; border-radius: 50%; background: #1a2535; }
+.notch-cam { width: 10px; height: 10px; border-radius: 50%; background: #0f1a28; border: 1px solid #1e2e40; }
+
+.phone-screen {
+  background: #030810;
+  border-radius: 28px;
+  height: 480px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-topbar {
+  padding: 14px 16px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.app-logo {
+  display: flex; align-items: center; gap: 8px;
+}
+
+.logo-icon {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+
+.app-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  color: var(--white);
+}
+
+.app-signal { display: flex; gap: 2px; align-items: flex-end; }
+.app-signal span {
+  width: 3px; background: var(--accent);
+  border-radius: 1px;
+  opacity: 0.7;
+}
+.app-signal span:nth-child(1) { height: 5px; }
+.app-signal span:nth-child(2) { height: 8px; }
+.app-signal span:nth-child(3) { height: 11px; }
+.app-signal span:nth-child(4) { height: 14px; opacity: 0.3; }
+
+.app-content { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+
+.app-greeting {
+  font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px;
+}
+
+.app-headline {
+  font-family: 'DM Serif Display', serif;
+  font-size: 15px;
+  color: var(--white);
+  line-height: 1.3;
+}
+
+.app-dilemma {
+  background: rgba(232,160,32,0.08);
+  border: 1px solid rgba(232,160,32,0.2);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.dilemma-tag {
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 6px;
+}
+
+.dilemma-text {
+  font-size: 11px; color: rgba(216,228,240,0.8); line-height: 1.5;
+}
+
+.app-tools {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+
+.app-tool {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 10px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.app-tool:hover { background: rgba(255,255,255,0.07); }
+.app-tool.active { border-color: var(--accent); background: rgba(232,160,32,0.06); }
+
+.tool-emoji { font-size: 18px; margin-bottom: 4px; }
+.tool-name { font-size: 10px; font-weight: 600; color: var(--white); }
+.tool-sub { font-size: 9px; color: var(--muted); }
+
+.app-progress {
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.prog-label { font-size: 10px; color: var(--muted); flex: 1; }
+.prog-bar {
+  flex: 2;
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.prog-fill {
+  width: 33%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  animation: prog 3s ease-in-out infinite alternate;
+}
+@keyframes prog { from { width: 20%; } to { width: 65%; } }
+
+/* Glow rings */
+.phone-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: pulseRing 4s ease-in-out infinite;
+}
+@keyframes pulseRing {
+  0%,100% { transform: scale(1); opacity: 0.15; }
+  50% { transform: scale(1.08); opacity: 0.08; }
+}
+.glow-1 {
+  width: 380px; height: 380px;
+  border: 1px solid var(--accent);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.glow-2 {
+  width: 480px; height: 480px;
+  border: 1px solid rgba(64,180,224,0.3);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 1s;
+}
+
+/* ─── SECTIONS ─── */
+.section { padding: 100px 80px; max-width: 1200px; margin: 0 auto; }
+
+.section-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  background: rgba(232,160,32,0.08);
+  border: 1px solid rgba(232,160,32,0.2);
+  border-radius: 3px;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+h2 em { font-style: italic; color: var(--accent); }
+
+.section-lead {
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 620px;
+  line-height: 1.85;
+  margin-bottom: 64px;
+}
+
+.divider-full {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ─── PROBLEM SECTION ─── */
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  margin-top: 0;
+}
+
+.prob-card {
+  background: var(--surface);
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+.prob-card:hover { background: var(--surface2); }
+
+.prob-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 60%, rgba(232,160,32,0.03));
+}
+
+.prob-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 5rem;
+  color: rgba(232,160,32,0.08);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.prob-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.prob-card p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.prob-tag {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 3px 10px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 1px solid;
+  border-radius: 2px;
+}
+.tag-red { color: var(--accent2); border-color: rgba(224,80,48,0.3); }
+.tag-blue { color: var(--accent3); border-color: rgba(64,180,224,0.3); }
+.tag-gold { color: var(--accent); border-color: rgba(232,160,32,0.3); }
+
+/* ─── ACADEMIC SECTION ─── */
+.academic-wrap {
+  background: var(--surface);
+  padding: 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.academic-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent3), transparent);
+}
+
+.academic-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.academic-left h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.6rem;
+  color: var(--white);
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+.academic-left p {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 16px;
+}
+
+.source-list { display: flex; flex-direction: column; gap: 12px; }
+
+.source-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 14px;
+  background: rgba(255,255,255,0.03);
+  border-left: 2px solid;
+}
+
+.source-item.orig { border-color: var(--accent); }
+.source-item.adapted { border-color: var(--accent3); }
+
+.source-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.source-name { font-size: 0.88rem; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+.source-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+.source-badge {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 8px;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+.badge-orig { background: rgba(232,160,32,0.15); color: var(--accent); }
+.badge-adapted { background: rgba(64,180,224,0.1); color: var(--accent3); }
+
+/* ─── TOOLS SECTION ─── */
+.tools-bg {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--surface) 50%, var(--bg) 100%);
+  padding: 100px 0;
+}
+
+.tool-block {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 80px;
+}
+
+.tools-list { display: flex; flex-direction: column; gap: 3px; margin-top: 48px; }
+
+.tool-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 1fr 280px;
+  gap: 0;
+  background: var(--surface);
+  overflow: hidden;
+  transition: all 0.3s;
+  cursor: default;
+}
+
+.tool-row:hover { background: var(--surface2); }
+
+.tool-num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  padding: 32px 20px;
+  border-right: 1px solid var(--border);
+}
+
+.t1 .tool-num { color: rgba(232,160,32,0.4); }
+.t2 .tool-num { color: rgba(224,80,48,0.4); }
+.t3 .tool-num { color: rgba(64,180,224,0.4); }
+.t4 .tool-num { color: rgba(80,200,120,0.4); }
+
+.tool-main {
+  padding: 32px 36px;
+  border-right: 1px solid var(--border);
+}
+
+.tool-main h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.tool-main .challenge {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.tool-main p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.tool-steps-col {
+  padding: 32px 36px;
+  border-right: 1px solid var(--border);
+}
+
+.tool-steps-col .steps-label {
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 14px;
+}
+
+.step-line {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 0.82rem; color: rgba(216,228,240,0.6);
+  line-height: 1.4; margin-bottom: 8px;
+}
+
+.step-n {
+  width: 16px; height: 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+}
+
+.t1 .step-n { background: rgba(232,160,32,0.15); color: var(--accent); }
+.t2 .step-n { background: rgba(224,80,48,0.15); color: var(--accent2); }
+.t3 .step-n { background: rgba(64,180,224,0.15); color: var(--accent3); }
+.t4 .step-n { background: rgba(80,200,120,0.15); color: #50c878; }
+
+.tool-scenario {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.scenario-label {
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 10px;
+}
+
+.scenario-box {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px;
+  font-size: 0.8rem;
+  color: rgba(216,228,240,0.65);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.t1 .scenario-box { border-left: 2px solid var(--accent); }
+.t2 .scenario-box { border-left: 2px solid var(--accent2); }
+.t3 .scenario-box { border-left: 2px solid var(--accent3); }
+.t4 .scenario-box { border-left: 2px solid #50c878; }
+
+/* ─── APP SCREENS SECTION ─── */
+.screens-section { padding: 100px 80px; max-width: 1200px; margin: 0 auto; }
+
+.screens-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  margin-bottom: 80px;
+}
+
+.screens-text h2 { margin-bottom: 16px; }
+.screens-text p { font-size: 0.92rem; color: var(--muted); line-height: 1.85; margin-bottom: 14px; }
+
+.feature-list { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+
+.feature-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.feat-icon {
+  width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.fi-gold { background: rgba(232,160,32,0.12); }
+.fi-red { background: rgba(224,80,48,0.12); }
+.fi-blue { background: rgba(64,180,224,0.12); }
+.fi-green { background: rgba(80,200,120,0.12); }
+
+.feat-text h4 { font-size: 0.92rem; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+.feat-text p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+/* Multi phone screens */
+.screens-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  align-items: end;
+}
+
+.mini-phone {
+  background: linear-gradient(145deg, #1a2535, #0d1520);
+  border-radius: 28px;
+  border: 1.5px solid rgba(255,255,255,0.1);
+  padding: 14px 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.mini-phone.tall { transform: translateY(-20px); }
+
+.mini-notch {
+  width: 50px; height: 14px;
+  background: #080c14; border-radius: 0 0 10px 10px;
+  margin: 0 auto 10px;
+}
+
+.mini-screen {
+  background: #030810;
+  border-radius: 18px;
+  height: 240px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 10px;
+}
+
+.ms-header {
+  font-size: 9px; font-weight: 600; color: var(--white);
+  letter-spacing: 1px; text-transform: uppercase;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.ms-block {
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+.ms-gold { background: rgba(232,160,32,0.08); border: 1px solid rgba(232,160,32,0.15); color: rgba(216,228,240,0.7); }
+.ms-dark { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: var(--muted); }
+.ms-accent { background: var(--accent); color: #000; font-weight: 600; text-align: center; padding: 8px; border-radius: 4px; font-size: 10px; }
+.ms-blue { background: rgba(64,180,224,0.08); border: 1px solid rgba(64,180,224,0.15); color: rgba(216,228,240,0.7); }
+
+.ms-row {
+  display: flex; gap: 6px;
+}
+.ms-row .ms-block { flex: 1; }
+
+.screen-label {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ─── HOW SECTION ─── */
+.how-section { background: var(--surface); padding: 100px 0; }
+.how-inner { max-width: 1200px; margin: 0 auto; padding: 0 80px; }
+
+.loop-visual {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 0;
+  margin: 64px 0;
+}
+
+.loop-step {
+  background: var(--bg);
+  padding: 32px 24px;
+  text-align: center;
+  position: relative;
+}
+
+.loop-step::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.4s;
+}
+.loop-step:hover::before { transform: scaleX(1); }
+
+.loop-icon { font-size: 2rem; margin-bottom: 14px; }
+
+.loop-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  color: rgba(232,160,32,0.1);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.loop-step h3 { font-size: 0.9rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+.loop-step p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+.loop-arrow {
+  font-size: 1.5rem;
+  color: rgba(232,160,32,0.3);
+  padding: 0 8px;
+  text-align: center;
+}
+
+.system-compare {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 0;
+  align-items: stretch;
+}
+
+.sys-col {
+  padding: 40px;
+}
+
+.sys-col.before { background: rgba(224,80,48,0.05); border: 1px solid rgba(224,80,48,0.1); }
+.sys-col.after { background: rgba(80,200,120,0.05); border: 1px solid rgba(80,200,120,0.1); }
+
+.sys-col h3 {
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.before h3 { color: var(--accent2); }
+.after h3 { color: #50c878; }
+
+.sys-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 0.88rem; color: var(--muted);
+  line-height: 1.5; margin-bottom: 14px;
+}
+
+.sys-item::before { content: attr(data-icon); flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+
+.sys-mid {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  writing-mode: vertical-lr;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-align: center;
+  gap: 8px;
+  flex-direction: column;
+}
+
+/* ─── ORG SECTION ─── */
+.org-section { padding: 100px 80px; max-width: 1200px; margin: 0 auto; }
+
+.org-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  margin-top: 60px;
+}
+
+.org-card {
+  background: var(--surface);
+  padding: 40px 36px;
+  position: relative;
+}
+
+.org-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  color: var(--white);
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+
+.org-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.75; }
+
+.org-icon {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  display: block;
+}
+
+/* ─── VISION / CLOSING ─── */
+.vision-section {
+  background: linear-gradient(160deg, #0a1220 0%, #080c14 100%);
+  padding: 120px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.vision-section::before {
+  content: 'VERDIKOMPASSET';
+  position: absolute;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18vw;
+  color: rgba(232,160,32,0.025);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  pointer-events: none;
+  letter-spacing: 8px;
+}
+
+.vision-inner { max-width: 800px; margin: 0 auto; position: relative; }
+
+.big-quote {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-style: italic;
+  color: var(--white);
+  line-height: 1.45;
+  margin-bottom: 32px;
+}
+
+.big-quote em { color: var(--accent); font-style: normal; }
+
+.quote-source {
+  font-size: 0.85rem;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+.candidate-tag {
+  display: inline-block;
+  margin-top: 48px;
+  padding: 8px 24px;
+  background: rgba(232,160,32,0.08);
+  border: 1px solid rgba(232,160,32,0.2);
+  border-radius: 3px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: #04070e;
+  padding: 40px 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+}
+
+.footer-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 3px;
+  color: var(--accent);
+}
+
+.footer-info {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: right;
+  line-height: 1.7;
+}
+
+/* ─── SCROLL ANIMATIONS ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-right { display: none; }
+  .hero-left { padding: 80px 40px; }
+  .section { padding: 80px 40px; }
+  .problem-grid { grid-template-columns: 1fr; }
+  .tool-row { grid-template-columns: 1fr; }
+  .tool-num { display: none; }
+  .screens-grid { grid-template-columns: repeat(2,1fr); }
+  .loop-visual { grid-template-columns: 1fr; }
+  .loop-arrow { transform: rotate(90deg); }
+  .org-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 20px; text-align: center; }
+  .footer-info { text-align: center; }
+  .academic-cols { grid-template-columns: 1fr; }
+  .screens-intro { grid-template-columns: 1fr; }
+  .system-compare { grid-template-columns: 1fr; }
+  .sys-mid { writing-mode: horizontal-tb; padding: 20px; }
+  .tool-block, .how-inner { padding: 0 40px; }
+  .org-section, .screens-section { padding: 80px 40px; }
+  .vision-section { padding: 80px 40px; }
+  footer { padding: 40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-left">
+    <div class="status-bar">
+      <div class="status-dot"></div>
+      <span class="status-text">Digital Lederguide · Frivillig Beredskap · 2026</span>
+    </div>
+    <div class="hero-label">Bacheloroppgave · Kandidat 7</div>
+    <h1>
+      Verdi
+      <span>Kompasset</span>
+    </h1>
+    <p class="hero-tagline">Fra akademisk teori til operativt instinkt – en digital lederguide for frivillig beredskap</p>
+    <p class="hero-desc">Fire vitenskapelig forankrede verktøy, samlet i én applikasjon. Designet for å gjøre verdibasert ledelse til en naturlig, intuitiv del av hverdagen – i fredstid og på aksjon.</p>
+    <div class="btn-row">
+      <a href="#verktoy" class="btn btn-gold">Se verktøyene</a>
+      <a href="#app" class="btn btn-ghost">Applikasjonen</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="phone-wrap">
+      <div class="phone-glow glow-2"></div>
+      <div class="phone-glow glow-1"></div>
+      <div class="phone-outer">
+        <div class="phone-notch">
+          <div class="notch-dot"></div>
+          <div class="notch-cam"></div>
+          <div class="notch-dot"></div>
+        </div>
+        <div class="phone-screen">
+          <div class="app-topbar">
+            <div class="app-logo">
+              <div class="logo-icon">🧭</div>
+              <span class="app-name">VERDIKOMPASSET</span>
+            </div>
+            <div class="app-signal">
+              <span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="app-content">
+            <div class="app-greeting">Modul 2 · Pågår</div>
+            <div class="app-headline">Aksjonens hete –<br>hvem leder du fra nå?</div>
+            <div class="app-dilemma">
+              <div class="dilemma-tag">⚠ Dilemma</div>
+              <div class="dilemma-text">Stressnivået øker på skadestedet. Impulsen til å mikrolede melder seg. Hva gjør du?</div>
+            </div>
+            <div class="app-tools">
+              <div class="app-tool">
+                <div class="tool-emoji">🧭</div>
+                <div class="tool-name">Navigasjon</div>
+                <div class="tool-sub">Modul 1</div>
+              </div>
+              <div class="app-tool active">
+                <div class="tool-emoji">⏸️</div>
+                <div class="tool-name">Etisk pause</div>
+                <div class="tool-sub">Aktiv</div>
+              </div>
+              <div class="app-tool">
+                <div class="tool-emoji">🔍</div>
+                <div class="tool-name">Rel.skann</div>
+                <div class="tool-sub">Modul 3</div>
+              </div>
+              <div class="app-tool">
+                <div class="tool-emoji">🔄</div>
+                <div class="tool-name">Mening</div>
+                <div class="tool-sub">Modul 4</div>
+              </div>
+            </div>
+            <div class="app-progress">
+              <span class="prog-label">Internalisering</span>
+              <div class="prog-bar"><div class="prog-fill"></div></div>
+              <span style="font-size:10px;color:var(--accent)">33%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider-full"></div>
+
+<!-- PROBLEM -->
+<div style="background: var(--surface); padding: 100px 0;">
+<div class="section">
+  <div class="section-chip reveal">Bakgrunn & Problemfelt</div>
+  <h2 class="reveal">Frivillighet lever av lyst –<br>og <em>dør av plikt</em></h2>
+  <p class="section-lead reveal">Norsk frivillig beredskap er under press. Profesjonaliseringskrav øker, mens motivasjonsgrunnlaget er skjørt. Som Habermann (2007) formulerer det: frivillighet lever av lyst og dør av plikt. Utfordringen er ikke ressurser – det er lederskap.</p>
+
+  <div class="problem-grid">
+    <div class="prob-card reveal">
+      <div class="prob-num">01</div>
+      <span class="prob-tag tag-red">Strukturelt</span>
+      <h3>Hybriditetens krysspress</h3>
+      <p>Den frivillige lederen navigerer mellom to logikker: profesjonell instrukskontroll fra systemet og autonomibasert frivillighet fra mannskapet. Uten bevisst verdiforankret ledelse brytes den psykologiske kontrakten – og frafall følger.</p>
+    </div>
+    <div class="prob-card reveal">
+      <div class="prob-num">02</div>
+      <span class="prob-tag tag-gold">Kognitivt</span>
+      <h3>Det institusjonelle tillitsgapet</h3>
+      <p>Fraværet av institusjonelle tillitsgarantier mellom profesjonelle innsatsledere og frivillige skaper løpende tillitsevalueringer under press. Resultatet er mikroledelse og detaljstyring som krenker de frivilliges behov for autonomi – ikke av ond vilje, men som rasjonelt svar på ansvarsstrukturen.</p>
+    </div>
+    <div class="prob-card reveal">
+      <div class="prob-num">03</div>
+      <span class="prob-tag tag-blue">Relasjonelt</span>
+      <h3>Kravpresset og relasjonell slitasje</h3>
+      <p>Økte administrative krav, sertifiseringskrav og oppdragsmengde treffer ikke mannskapene direkte – det er lederne som absorberer støyten. Når de drukner i byråkrati, forsvinner det relasjonelle arbeidet som holder de frivillige motiverte. Resultatet er «Tordenskiolds soldater».</p>
+    </div>
+    <div class="prob-card reveal">
+      <div class="prob-num">04</div>
+      <span class="prob-tag tag-red">Institusjonelt</span>
+      <h3>Profesjonaliseringen tapper sjelen</h3>
+      <p>Totalberedskapsmeldingen (2025) øker kravene. Men administrativ byråkratisering uten meningsoversettelse truer den indre motivasjonen som er selve livsnerven i frivillig beredskap.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider-full"></div>
+
+<!-- ACADEMIC FOUNDATION -->
+<div style="padding: 100px 0; max-width: 1200px; margin: 0 auto; padding: 100px 80px;">
+  <div class="section-chip reveal">Vitenskapelig grunnlag</div>
+  <h2 class="reveal">Forankret i forskning –<br><em>integrert til praksis</em></h2>
+  <p class="section-lead reveal">Verktøyene i Verdikompasset er ikke generiske ledelsesmodeller. De er utviklet spesifikt for frivillig beredskap, med utgangspunkt i dokumenterte utfordringer og vitenskapelig forankrede teorier.</p>
+
+  <div class="academic-wrap reveal">
+    <div class="academic-cols">
+      <div class="academic-left">
+        <h3>Kandidatens bidrag: Syntese og kontekstualisering</h3>
+        <p>Bacheloroppgaven representerer ikke en repetisjon av eksisterende teorier, men en original syntese. Kandidaten har identifisert fire konkrete utfordringer i frivillig beredskapsledelse og koblet dem til relevante teoretiske rammeverk fra ulike fagfelt.</p>
+        <p>Tre av de fire verktøyene er kandidatens egne konstruksjoner – tilpasset og videreutviklet fra forskning innen motivasjonspsykologi, kognisjonsvitenskap og organisasjonsledelse. Ett verktøy er hentet direkte fra etablert forskning.</p>
+        <p>Denne syntesen er oppgavens faglige kjerne: å bygge bro mellom akademisk teori og operativ ledervirkelighet.</p>
+      </div>
+      <div class="academic-right">
+        <div class="source-list">
+          <div class="source-item orig">
+            <div class="source-icon">🧭</div>
+            <div>
+              <div class="source-name">Navigasjonshjulet</div>
+              <div class="source-desc">Opprinnelig utviklet av Kvalnes & Øverenget (2020). Brukt uendret som modul 1 – ett av de mest anerkjente verktøyene i norsk etikklitteratur.</div>
+              <span class="source-badge badge-orig">Original kilde · Kvalnes & Øverenget</span>
+            </div>
+          </div>
+          <div class="source-item adapted">
+            <div class="source-icon">⏸️</div>
+            <div>
+              <div class="source-name">Den Etiske Pausen</div>
+              <div class="source-desc">Kandidatens konstruksjon, basert på Kahnemans system-teori (2013) og Øverengets refleksjonsfilosofi om å ta makt over eget handlingsliv ved å stoppe opp (2022, s. 93).</div>
+              <span class="source-badge badge-adapted">Kandidatens syntese</span>
+            </div>
+          </div>
+          <div class="source-item adapted">
+            <div class="source-icon">🔍</div>
+            <div>
+              <div class="source-name">Relasjons-skannet</div>
+              <div class="source-desc">Kandidatens konstruksjon, bygget på Sirris' fire dimensjoner for frivillighetsledelse (2023): verdsette, relatere, kommunisere, involvere.</div>
+              <span class="source-badge badge-adapted">Kandidatens syntese</span>
+            </div>
+          </div>
+          <div class="source-item adapted">
+            <div class="source-icon">🔄</div>
+            <div>
+              <div class="source-name">Meningsoversetter</div>
+              <div class="source-desc">Kandidatens konstruksjon, integrerer Sirris (2023), selvbestemmelsesteorien (Deci & Ryan) og navigasjonshjulets identitetsdimensjon.</div>
+              <span class="source-badge badge-adapted">Kandidatens syntese</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider-full"></div>
+
+<!-- TOOLS -->
+<div class="tools-bg" id="verktoy">
+<div class="tool-block">
+  <div class="section-chip reveal">Fire moduler</div>
+  <h2 class="reveal">Verktøykassen –<br><em>fire presise instrumenter</em></h2>
+  <p class="section-lead reveal">Hvert verktøy adresserer én konkret, dokumentert utfordring. I appen møter lederen dem gjennom scenarioer og dilemmaer fra sin egen beredskapsvirkelighet.</p>
+
+  <div class="tools-list">
+
+    <div class="tool-row t1 reveal">
+      <div class="tool-num">01</div>
+      <div class="tool-main">
+        <h3>🧭 Navigasjonshjulet</h3>
+        <div class="challenge">Utfordring: Hybriditetens krysspress</div>
+        <p>Bryter det Øverenget kaller «røde flagg»-beslutninger – valg fattet utelukkende på grunnlag av regler, vane eller makt, uten at verdiene kobles på. Hjulet tvinger lederen ut av «er det lovlig?»-sporet og inn i «samsvarer dette med hvem vi er?» (identitet) og «kan jeg stå innenfor denne handlingen?» (moral).</p>
+      </div>
+      <div class="tool-steps-col">
+        <div class="steps-label">I appen</div>
+        <div class="step-line"><div class="step-n">1</div>Lederen presenteres for et krysspress-dilemma fra sin organisasjon</div>
+        <div class="step-line"><div class="step-n">2</div>Roter hjulet gjennom alle seks dimensjoner</div>
+        <div class="step-line"><div class="step-n">3</div>Reflektere over: «Hva gjør dette med vår stolthet?»</div>
+      </div>
+      <div class="tool-scenario">
+        <div class="scenario-label">Eksempelscenario</div>
+        <div class="scenario-box">«Du får en rigid instruks fra en etat som bryter med korpsets verdier. Er det nok at det er lovlig?»</div>
+      </div>
+    </div>
+
+    <div class="tool-row t2 reveal">
+      <div class="tool-num">02</div>
+      <div class="tool-main">
+        <h3>⏸️ Den Etiske Pausen</h3>
+        <div class="challenge">Utfordring: Tillitsgapet</div>
+        <p>Tvinger frem System 2-refleksjon og bryter den automatiske evalueringslogikken som oppstår i tillitsgapet. Forankret i Kahnemans system-teori (2013) og Øverengets refleksjonsfilosofi: «gode ledere tar makt over eget handlingsliv ved å stoppe opp og reflektere over egne beveggrunner» (2022, s. 93). Der System 1 spør «hva gjør jeg nå?», tvinger System 2 frem «hva bør jeg gjøre her, og overfor hvem?»</p>
+      </div>
+      <div class="tool-steps-col">
+        <div class="steps-label">I appen</div>
+        <div class="step-line"><div class="step-n">1</div>Gjenkjenn impulsen – legg merke til at System 1 er aktivert</div>
+        <div class="step-line"><div class="step-n">2</div>Aktiver den bevisste stoppen</div>
+        <div class="step-line"><div class="step-n">3</div>Vurder mannskapets sårbarhet før du kommuniserer</div>
+      </div>
+      <div class="tool-scenario">
+        <div class="scenario-label">Eksempelscenario</div>
+        <div class="scenario-box">«Stressnivået øker på skadestedet. Impulsen til å mikrolede melder seg. Trykk pause.»</div>
+      </div>
+    </div>
+
+    <div class="tool-row t3 reveal">
+      <div class="tool-num">03</div>
+      <div class="tool-main">
+        <h3>🔍 Relasjons-skannet</h3>
+        <div class="challenge">Utfordring: Kravpresset</div>
+        <p>En sjekkliste for System 2-refleksjon bygget på Sirris' (2023) fire dimensjoner for frivillig ledelse. Verktøyet sikrer at det relasjonelle arbeidet ikke forsvinner i presset fra administrative krav – det settes aktivt i system som del av lederens daglige praksis, i fredstid og etter aksjon.</p>
+      </div>
+      <div class="tool-steps-col">
+        <div class="steps-label">I appen</div>
+        <div class="step-line"><div class="step-n">1</div>Gjennomfør skannet etter aksjon eller øvelse</div>
+        <div class="step-line"><div class="step-n">2</div>Evaluer langs: verdsette, relatere, kommunisere, involvere</div>
+        <div class="step-line"><div class="step-n">3</div>Identifiser hvilken kolonne du ledet fra i dag</div>
+      </div>
+      <div class="tool-scenario">
+        <div class="scenario-label">Eksempelscenario</div>
+        <div class="scenario-box">«Lot du dem bruke sin spisskompetanse og sitt faglige skjønn – eller dikterte du alle løsninger?»</div>
+      </div>
+    </div>
+
+    <div class="tool-row t4 reveal">
+      <div class="tool-num">04</div>
+      <div class="tool-main">
+        <h3>🔄 Meningsoversetter</h3>
+        <div class="challenge">Utfordring: Profesjonaliseringens demotivering</div>
+        <p>Lederen «filtrerer» administrative krav og byråkratisk tvang gjennom et verdiperspektiv. Formålet er å oversette meningsløse krav til noe mannskapet kan koble til faglig stolthet og felles identitet.</p>
+      </div>
+      <div class="tool-steps-col">
+        <div class="steps-label">I appen</div>
+        <div class="step-line"><div class="step-n">1</div>Identifiser kravet som oppleves som meningsløst</div>
+        <div class="step-line"><div class="step-n">2</div>Bruk navigasjonshjulet: finn identitet/moral-koblingen</div>
+        <div class="step-line"><div class="step-n">3</div>Formidle med verdiforankret begrunnelse</div>
+      </div>
+      <div class="tool-scenario">
+        <div class="scenario-label">Eksempelscenario</div>
+        <div class="scenario-box">«Staten krever tyngre rapportering. Øv på å oversette det til profesjonell stolthet, ikke byrde.»</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<div class="divider-full"></div>
+
+<!-- APP SECTION -->
+<div class="screens-section" id="app">
+  <div class="section-chip reveal">Applikasjonen</div>
+  <div class="screens-intro">
+    <div class="screens-text">
+      <h2 class="reveal">Hvordan <em>Verdikompasset</em><br>fungerer i praksis</h2>
+      <p class="reveal">Verdikompasset er ikke en informasjonsapp. Det er en kognitiv treningsarena. Brukeren øver seg på verdibaserte beslutninger i fredstid – slik at de sitter i ryggmargen under aksjon.</p>
+      <p class="reveal">Appen er designet rundt én faglig innsikt: for at etisk skjønn skal aktiveres automatisk under stress, må det øves inn gjennom repetisjon til System 1 selv er verdibasert.</p>
+
+      <div class="feature-list">
+        <div class="feature-item reveal">
+          <div class="feat-icon fi-gold">🎯</div>
+          <div class="feat-text">
+            <h4>Scenariobasert læring</h4>
+            <p>Realistiske dilemmaer fra frivillig beredskap. Lederen gjenkjenner sin hverdag – og øver på den.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal">
+          <div class="feat-icon fi-red">⚡</div>
+          <div class="feat-text">
+            <h4>Adaptiv vanskelighetsgrad</h4>
+            <p>Appen tilpasser seg lederens nivå. Enkle gjenkjenningsøvelser eskalerer til komplekse krysspressdilemmaer.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal">
+          <div class="feat-icon fi-blue">📊</div>
+          <div class="feat-text">
+            <h4>Fremgang og refleksjon</h4>
+            <p>Lederen ser sin egen utvikling – fra bevisst kompetanse til ubevisst, intuitiv verdiledelse.</p>
+          </div>
+        </div>
+        <div class="feature-item reveal">
+          <div class="feat-icon fi-green">🔄</div>
+          <div class="feat-text">
+            <h4>Fredstid og aksjon</h4>
+            <p>Ulike moduser: langsom System 2-trening i fredstid, hurtige refleksøvelser for operativ kontekst.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="screens-grid reveal">
+        <div class="mini-phone">
+          <div class="mini-notch"></div>
+          <div class="mini-screen">
+            <div class="ms-header">🏠 Hjem</div>
+            <div class="ms-block ms-gold">God morgen, leder. Du har ett aktivt dilemma.</div>
+            <div class="ms-block ms-dark">Modul 1 · Navigasjon<br><span style="color:var(--accent)">▶ Fortsett</span></div>
+            <div class="ms-block ms-dark">Modul 2 · Etisk pause<br><span style="color:var(--muted)">Låst</span></div>
+            <div class="ms-accent">Start daglig øvelse</div>
+          </div>
+          <div class="screen-label">Startskjerm</div>
+        </div>
+
+        <div class="mini-phone tall">
+          <div class="mini-notch"></div>
+          <div class="mini-screen">
+            <div class="ms-header">⚠ Dilemma</div>
+            <div class="ms-block ms-gold">«Du mottar en instruks som bryter med korpsets verdier. Hva gjør du?»</div>
+            <div class="ms-row">
+              <div class="ms-block ms-dark" style="text-align:center">A<br>Følg instruksen</div>
+              <div class="ms-block ms-dark" style="text-align:center">B<br>Naviger hjulet</div>
+            </div>
+            <div class="ms-block ms-blue">Velg respons og reflekter</div>
+          </div>
+          <div class="screen-label">Dilemma</div>
+        </div>
+
+        <div class="mini-phone">
+          <div class="mini-notch"></div>
+          <div class="mini-screen">
+            <div class="ms-header">🧭 Navigasjonshjul</div>
+            <div class="ms-block ms-dark">Juss ✓<br>Økonomi ✓<br><span style="color:var(--accent)">Identitet →</span></div>
+            <div class="ms-block ms-gold">«Hva gjør dette med vår stolthet som korps?»</div>
+            <div class="ms-accent">Lagre refleksjon</div>
+          </div>
+          <div class="screen-label">Verktøy</div>
+        </div>
+
+        <div class="mini-phone tall">
+          <div class="mini-notch"></div>
+          <div class="mini-screen">
+            <div class="ms-header">📈 Fremgang</div>
+            <div class="ms-block ms-dark">Internalisering System 1</div>
+            <div style="margin:4px 0;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden">
+              <div style="width:62%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2))"></div>
+            </div>
+            <div class="ms-block ms-blue">14 dilemmaer løst<br>3 moduler aktive</div>
+            <div class="ms-block ms-dark" style="color:var(--accent);font-size:10px">«Du er i utvikling.»</div>
+          </div>
+          <div class="screen-label">Fremgang</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider-full"></div>
+
+<!-- HOW IT WORKS -->
+<div class="how-section">
+<div class="how-inner">
+  <div class="section-chip reveal">Mekanismen</div>
+  <h2 class="reveal">Fra <em>bevisst kunnskap</em><br>til ryggmargsrefleks</h2>
+  <p class="section-lead reveal">Appen er bygget rundt læringsloopen som transformerer eksplisitt, bevisst kompetanse (System 2) til intuitiv, automatisert ledelsespraksis (System 1 – verdibasert).</p>
+
+  <div class="loop-visual">
+    <div class="loop-step reveal">
+      <div class="loop-n">1</div>
+      <div class="loop-icon">📋</div>
+      <h3>Dilemma presenteres</h3>
+      <p>Realistisk scenario fra frivillig beredskap. Lederen gjenkjenner situasjonen.</p>
+    </div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-step reveal">
+      <div class="loop-n">2</div>
+      <div class="loop-icon">🔧</div>
+      <h3>Verktøy aktiveres</h3>
+      <p>Riktig modul for situasjonen. Steg-for-steg-veiledning gjennom verktøyet.</p>
+    </div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-step reveal">
+      <div class="loop-n">3</div>
+      <div class="loop-icon">💭</div>
+      <h3>Refleksjon</h3>
+      <p>Lederen vurderer konsekvenser, menneskelig påvirkning og etisk forankring.</p>
+    </div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-step reveal">
+      <div class="loop-n">4</div>
+      <div class="loop-icon">⚡</div>
+      <h3>Automatisering</h3>
+      <p>Gjennom repetisjon internaliseres mønstrene. System 1 blir verdibasert.</p>
+    </div>
+  </div>
+
+  <div class="system-compare reveal">
+    <div class="sys-col before">
+      <h3>System 1 · Ukalibrert</h3>
+      <div class="sys-item" data-icon="⚡">Autoritære reflekser under stress</div>
+      <div class="sys-item" data-icon="⚡">Instrumentell beslutningslogikk</div>
+      <div class="sys-item" data-icon="⚡">Relasjonell blindhet på aksjon</div>
+      <div class="sys-item" data-icon="⚡">Meningsløse krav skaper motstand</div>
+    </div>
+    <div class="sys-mid">TRENING · OVER · TID</div>
+    <div class="sys-col after">
+      <h3>System 1 · Verdibasert</h3>
+      <div class="sys-item" data-icon="✓">Verdibaserte reflekser under press</div>
+      <div class="sys-item" data-icon="✓">Intuitiv etisk skjønn</div>
+      <div class="sys-item" data-icon="✓">Relasjonell bevissthet i felt</div>
+      <div class="sys-item" data-icon="✓">Meningsoversettelse som naturlig vane</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="divider-full"></div>
+
+<!-- ORGANISATIONS -->
+<div class="org-section">
+  <div class="section-chip reveal">Målgruppe</div>
+  <h2 class="reveal">Bygget for norsk<br><em>frivillig beredskap</em></h2>
+  <p class="section-lead reveal">Verdikompasset er utviklet for ledere i frivillige redningsorganisasjoner – men prinsippene er universelle for alle som leder frivillige under krevende forhold.</p>
+
+  <div class="org-grid">
+    <div class="org-card reveal">
+      <span class="org-icon">🎯</span>
+      <h3>Primær bruk: Fredstid og kursvirksomhet</h3>
+      <p>Lederopplæring i organisasjonen. Modulene brukes som grunnlag for ledersamlinger, veiledning og systematisk kompetanseutvikling mellom aksjoner.</p>
+    </div>
+    <div class="org-card reveal">
+      <span class="org-icon">🔥</span>
+      <h3>Operativ bruk: Aksjon og debriefing</h3>
+      <p>Relasjons-skannet brukes som etteraksjon-verktøy. Den etiske pausen og navigasjonshjulet er tilpasset rask bruk i operative kontekster.</p>
+    </div>
+    <div class="org-card reveal">
+      <span class="org-icon">🌱</span>
+      <h3>Strategisk: Sosial bærekraft</h3>
+      <p>Organisasjoner som tar i bruk Verdikompasset investerer i sosial bærekraft – de sikrer at den psykologiske kontrakten med mannskapet ivaretas over tid, og at frafall reduseres.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider-full"></div>
+
+<!-- VISION -->
+<div class="vision-section">
+  <div class="vision-inner">
+    <div class="section-chip reveal" style="display:inline-flex">Visjon</div>
+    <p class="big-quote reveal">«Fremtidig beredskapsevne er ikke et spørsmål om ressurser eller kommandostrukturer. Det er et spørsmål om lederskap – om evnen til å se og <em>ivareta det menneskelige fundamentet</em> som holder systemet i live.»</p>
+    <div class="quote-source reveal">Bacheloroppgaven: Verdibasert ledelse for en bærekraftig frivillig beredskap</div>
+
+    <div class="reveal" style="margin-top:60px; padding:40px; background:rgba(232,160,32,0.04); border:1px solid rgba(232,160,32,0.15); max-width:580px; margin-left:auto; margin-right:auto; text-align:left;">
+      <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:16px">Veien videre</div>
+      <p style="font-size:0.92rem;color:var(--muted);line-height:1.8">Verdikompasset er utviklet som det praktiske resultatet av bacheloroppgaven. Applikasjonen skal videreutvikles i samarbeid med FORF (Frivillige Organisasjoners Redningsfaglige Forum) med mål om en fullskala lansering i frivillig norsk beredskap.</p>
+    </div>
+
+    <div class="candidate-tag reveal">Kandidat 7 · VID Vitenskapelige Høgskole · Stavanger 2026</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">VERDIKOMPASSET</div>
+  <div class="footer-info">
+    En digital lederguide for frivillig beredskap<br>
+    Bacheloroppgave · Sosial bærekraft og verdibasert ledelse<br>
+    VID Vitenskapelige Høgskole, Stavanger · 2026
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
